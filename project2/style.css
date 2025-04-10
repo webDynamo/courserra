@@ -1,0 +1,60 @@
+#navbar,.form, .table {
+        display: flex;
+        justify-content: center; /* Corrected from 'content-justify' */
+        align-items: center;
+        gap:10px;
+    }
+    
+    .logo {
+        height: 40px;
+        width: 40px; /* Corrected from 'widh' */
+    }
+
+    .heading{
+        font-weight: bold;
+        font-size: xx-large;
+    }
+
+    .heading ,#my{
+        color:aqua;
+
+    }
+    .heading, #Book{
+        color: blue;
+    }
+    .heading, #list{
+        color: aqua;
+    }
+    
+    fieldset{
+        padding: 15px;
+        width: 100%;
+    }
+    legend{
+        text-align: center;
+        font-size: x-large;
+    }
+    label{
+        font-size: large;
+    }
+    input{
+        padding-top: 4px;
+        padding-bottom: 4px;
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 4px;
+      }
+      table{
+        table-layout: fixed;
+        width: 50%;
+        margin-top: 20px;
+      }
+      th{
+        border-left: none;
+        border-right: none;
+        background-color: aliceblue;
+      }

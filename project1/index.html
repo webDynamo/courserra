@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+        <div class="bg-blue-500 text-white p-5 flex justify-between">
+                <h1 class="font-bold capitalized">Item list</h1>
+                <div class="flex gap-4 justify-center items-center">
+                        <label for="search">Search</label>
+                        <input class="bg-white border-gray-500 rounded-md py-1 w-32" type="text">
+                </div>
+        </div>
+        <div class="p-10 border max-w-xl mx-auto">
+                <div>
+                        <p class="font-bold">Add Item</p>
+                        <div>
+                          <label for=""></label>
+                          <input id="inputVal" type="text" class="border border-black-500" value="" name="" required> 
+                          <button id="button" class="border border-black-500 bg-black text-white px-3 py-1">Add </button>     
+                        </div>
+                </div>
+                <ol id="list">
+                        <li class="grid grid-cols-2">
+                                <p>Apple</p> <button>Delete</button>
+                        </li>
+                </ol>
+
+        </div>
+
+        <script>
+                const addInList=()=>{
+                const inputVal= document.getElementById("inputVal").value;
+                let listDiv=document.getElementById("list");
+                let listItem=document.createElement("li");
+                listItem.classList="grid grid-cols-2";
+                let para=document.createElement("p")
+                para.innerText=inputVal
+                listItem.appendChild(para);
+                let btn=document.createElement("button")
+                btn.innerText="Delete"
+                btn.classList="btn"
+                btn.addEventListener("click",function(e){
+                        e.target.parentElement.remove()
+                })
+                listItem.append(btn)
+                listDiv.appendChild(listItem) 
+                }
+                const btn=document.getElementById("button")
+                btn.addEventListener("click", addInList);
+               
+
+
+                const allbtn=document.getElementsByClassName("btn")
+                console.log(allbtn)
+
+              
+        </script>
+
+        
+</body>
+</html>

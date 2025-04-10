@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Document</title>
+</head>
+<body>
+        <div id="navbar">
+                <img class="logo" src="./Open Book.png" alt="">
+                <h1 class="headings"><span id="my">MY</span><span id="Book">Book</span><span id="list">List</span></h1>
+        </div>
+        <div class="form">
+        <form id="MyForm"  action="/action_page.php">
+                <fieldset>
+                <legend>Add Book Details</legend>
+                <label for="Title">BooK Title</label><br>
+                <input type="text" id="Title" name="Title" value=""><br><br>
+                <label for="Author">Book Author:</label><br>
+                <input type="text" id="Author" name="Author" value=""><br><br>
+                <label for="Book_id">Book Id</label><br>
+                <input type="text" id="Book_id" name="Book_id" value=""><br><br>
+                <input type="submit" value="Submit">
+                </fieldset>
+        </form> 
+        </div>
+        <div class="table">
+                <table id="table_data">
+                        <tr>
+                          <th>Title</th>
+                          <th>Author</th>
+                          <th>Book_id</th>
+                        </tr>
+                      <!-- add all data here -->
+                      </table>
+        </div>
+
+        <script>
+                const data=[];
+                const dataFromBackend = localStorage.getItem("dataFb");
+                                console.log("dataFb", dataFromBackend);
+                const form= document.getElementById("MyForm");
+                form.addEventListener("submit", function(e){
+                e.preventDefault()
+                const formData = new FormData(form);
+                const fData=Object.fromEntries(formData);
+                data.push(fData);
+                const myJSON = JSON.stringify(data)
+                localStorage.setItem("dataFb",myJSON);
+                 // Create and append Title column
+                 addListInData(fData)
+                
+                
+                
+                });
+                // create a function to load data in start
+                const addListInData = (data) => {
+                  const tableDiv = document.getElementById("table_data");
+                  const tableRow = document.createElement("tr");
+                  const table_data_title = document.createElement("td");
+                                table_data_title.innerText = data.Title;
+                                tableRow.appendChild(table_data_title);
+
+                                // Create and append Author column
+                                const table_data_author = document.createElement("td");
+                                table_data_author.innerText = data.Author;
+                                tableRow.appendChild(table_data_author);
+
+                                // Create and append Book_id column
+                                const table_data_id = document.createElement("td");
+                                table_data_id.innerText = data.Book_id;
+                                tableRow.appendChild(table_data_id);
+
+                                // Append row to table
+                                tableDiv.appendChild(tableRow);
+                  };
+                  window.onload = () => {
+                                const dataFromBackend = localStorage.getItem("dataFb");
+                                console.log("dataFb", dataFromBackend);
+                                if (dataFromBackend) {
+                                const parsedData = JSON.parse(dataFromBackend); // Parse the string to an array
+                                parsedData.forEach((item) => addListInData(item)); // Use forEach instead of map
+                        }
+                };
+
+
+        </script>
+</body>
+</html>

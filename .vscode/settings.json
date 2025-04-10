@@ -1,0 +1,8 @@
+{
+        "css.autoValidation": "Always",
+        "css.validate": true,
+        "css.completion.triggerPropertyValueCompletion": true,
+        "editor.quickSuggestions": {
+                "strings": "on"
+        }
+}
