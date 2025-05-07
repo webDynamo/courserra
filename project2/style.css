@@ -50,11 +50,31 @@
       }
       table{
         table-layout: fixed;
-        width: 50%;
+        width: 60%;
         margin-top: 20px;
       }
       th{
         border-left: none;
         border-right: none;
         background-color: aliceblue;
+      }
+
+      .box{
+        margin-top: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+       
+      }
+
+      #search-box{
+        max-width: 40%;
+        outline: none;
+        border-radius:5px;
+      }
+      #action_btn{
+        display: flex;
+        justify-content: space-between;
+        justify-items: center;
       }

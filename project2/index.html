@@ -1,90 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css">
+  <title>Book List</title>
 </head>
 <body>
-        <div id="navbar">
-                <img class="logo" src="./Open Book.png" alt="">
-                <h1 class="headings"><span id="my">MY</span><span id="Book">Book</span><span id="list">List</span></h1>
-        </div>
-        <div class="form">
-        <form id="MyForm"  action="/action_page.php">
-                <fieldset>
-                <legend>Add Book Details</legend>
-                <label for="Title">BooK Title</label><br>
-                <input type="text" id="Title" name="Title" value=""><br><br>
-                <label for="Author">Book Author:</label><br>
-                <input type="text" id="Author" name="Author" value=""><br><br>
-                <label for="Book_id">Book Id</label><br>
-                <input type="text" id="Book_id" name="Book_id" value=""><br><br>
-                <input type="submit" value="Submit">
-                </fieldset>
-        </form> 
-        </div>
-        <div class="table">
-                <table id="table_data">
-                        <tr>
-                          <th>Title</th>
-                          <th>Author</th>
-                          <th>Book_id</th>
-                        </tr>
-                      <!-- add all data here -->
-                      </table>
-        </div>
+  <div id="navbar">
+    <img class="logo" src="./Open Book.png" alt="open_book_image">
+    <h1 class="headings"><span id="my">MY</span><span id="Book">Book</span><span id="list">List</span></h1>
+  </div>
 
-        <script>
-                const data=[];
-                const dataFromBackend = localStorage.getItem("dataFb");
-                                console.log("dataFb", dataFromBackend);
-                const form= document.getElementById("MyForm");
-                form.addEventListener("submit", function(e){
-                e.preventDefault()
-                const formData = new FormData(form);
-                const fData=Object.fromEntries(formData);
-                data.push(fData);
-                const myJSON = JSON.stringify(data)
-                localStorage.setItem("dataFb",myJSON);
-                 // Create and append Title column
-                 addListInData(fData)
-                
-                
-                
-                });
-                // create a function to load data in start
-                const addListInData = (data) => {
-                  const tableDiv = document.getElementById("table_data");
-                  const tableRow = document.createElement("tr");
-                  const table_data_title = document.createElement("td");
-                                table_data_title.innerText = data.Title;
-                                tableRow.appendChild(table_data_title);
+  <div class="form">
+    <form id="MyForm">
+      <fieldset>
+        <legend>Add Book Details</legend>
+        <label for="Title">Book Title</label><br>
+        <input type="text" id="Title" name="Title" required><br><br>
+        <label for="Author">Book Author:</label><br>
+        <input type="text" id="Author" name="Author" required><br><br>
+        <label for="Book_id">Book Id</label><br>
+        <input type="text" id="Book_id" name="Book_id" required><br><br>
+        <input type="submit" value="Submit">
+      </fieldset>
+    </form>
+  </div>
 
-                                // Create and append Author column
-                                const table_data_author = document.createElement("td");
-                                table_data_author.innerText = data.Author;
-                                tableRow.appendChild(table_data_author);
+  <div class="box">
+    <input id="search-box" type="text" placeholder="Search product you like"
+      class="w-28 sm:w-80 px-3 h-10 placeholder:text-base sm:placeholder:text-base rounded-lg border focus:outline-none focus:border-black-700"
+      autocomplete="off">
+  </div>
 
-                                // Create and append Book_id column
-                                const table_data_id = document.createElement("td");
-                                table_data_id.innerText = data.Book_id;
-                                tableRow.appendChild(table_data_id);
+  <div class="table">
+    <table id="table_data">
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Book_id</th>
+        <th>Action</th>
+      </tr>
+    </table>
+  </div>
 
-                                // Append row to table
-                                tableDiv.appendChild(tableRow);
-                  };
-                  window.onload = () => {
-                                const dataFromBackend = localStorage.getItem("dataFb");
-                                console.log("dataFb", dataFromBackend);
-                                if (dataFromBackend) {
-                                const parsedData = JSON.parse(dataFromBackend); // Parse the string to an array
-                                parsedData.forEach((item) => addListInData(item)); // Use forEach instead of map
-                        }
-                };
+  <script>
+    let data = JSON.parse(localStorage.getItem("dataFb")) || [];
+
+    const form = document.getElementById("MyForm");
+    const table = document.getElementById("table_data");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const fData = Object.fromEntries(formData);
+      data.push(fData);
+      localStorage.setItem("dataFb", JSON.stringify(data));
+      addRow(fData);
+      form.reset();
+    });
+
+    const addRow = (book) => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${book.Title}</td>
+        <td>${book.Author}</td>
+        <td>${book.Book_id}</td>
+        <td id="action_btn">
+          <button class="edit">edit</button>
+          <button class="delete">delete</button>
+        </td>
+      `;
+
+      table.appendChild(row);
+    };
+
+    const loadInitialData = () => {
+      data.forEach(item => addRow(item));
+    };
+
+    const getRowIndex = (row) => {
+      return Array.from(table.rows).indexOf(row) - 1; // subtract 1 for header row
+    };
+
+    const getEditedDataFromRow = (row) => {
+      return {
+        Title: row.children[0].innerText,
+        Author: row.children[1].innerText,
+        Book_id: row.children[2].innerText
+      };
+    };
+
+    table.addEventListener("click", function (e) {
+      const row = e.target.closest("tr");
+
+      if (e.target.classList.contains("edit")) {
+        if (e.target.innerText === "edit") {
+          makeRowEditable(row, true);
+          e.target.innerText = "save";
+        } else {
+          makeRowEditable(row, false);
+          e.target.innerText = "edit";
+          const newData = getEditedDataFromRow(row);
+          const index = getRowIndex(row);
+          data[index] = newData;
+          localStorage.setItem("dataFb", JSON.stringify(data));
+        }
+      }
+
+      if (e.target.classList.contains("delete")) {
+        const index = getRowIndex(row);
+        data.splice(index, 1);
+        localStorage.setItem("dataFb", JSON.stringify(data));
+        table.deleteRow(index + 1);
+      }
+    });
+
+    const makeRowEditable = (row, isEditable) => {
+      for (let i = 0; i < 3; i++) {
+        row.children[i].setAttribute("contenteditable", isEditable);
+        row.children[i].style.border = isEditable ? "2px solid black" : "1px solid black";
+      }
+    };
+
+    window.onload = loadInitialData;
+    const search_box=document.getElementById("search-box");
+    search_box.addEventListener("input",(e)=>{
+       const search_box_value=e.target.value;
+       const input=search_box_value.toLowerCase()
+       const tr = table.getElementsByTagName("tr");
+       
+      for (let i = 1; i < tr.length; i++) {
+        const tds = tr[i].getElementsByTagName("td");
+        let found = false;
+
+        for (let j = 0; j < tds.length; j++) {
+          if (tds[j].textContent.toLowerCase().includes(input)) {
+            found = true;
+            break;
+          }
+        }
+
+        tr[i].style.display = found ? "" : "none";
+      }
 
 
-        </script>
+    })
+  </script>
 </body>
 </html>
